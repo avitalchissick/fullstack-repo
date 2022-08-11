@@ -64,12 +64,48 @@ async function getData() {
         console.log('Deps:')
         console.log(depData)
 
-        insertDataToHtml(depData,div)
+        insertDataToHtml2(depData,div)
 
     } catch (error) {
         console.error(error);
     }
 
+}
+
+function insertDataToHtml2(departments,div) {
+  // arranging data by store
+  const storesD = []
+  for(const dep of departments){
+    if (!storesD[dep.store.id])
+      storesD[dep.store.id] = dep.store
+  }  
+  console.log('stores');
+  console.log(storesD);
+
+  //handeling html
+  for(const store of storesD){
+    if (store) {
+      const h2 = document.createElement('h2')
+      h2.style.backgroundColor = 'grey'
+      h2.innerHTML = store.name
+  
+      for (const dep of store.departments)
+      {
+        const ol_dep = document.createElement('ol')
+        ol_dep.style.backgroundColor = 'aquamarine'
+        ol_dep.innerHTML = dep.name
+    
+        for (const product of dep.products){
+            const ol = document.createElement('ol')
+            ol.style.backgroundColor = 'lightblue'
+            ol.innerHTML = product.name
+            ol_dep.appendChild(ol)    
+        }
+        h2.appendChild(ol_dep)
+      }
+      div.append(h2)
+    }
+  }
 }
 
 function insertDataToHtml(departments,div) {
